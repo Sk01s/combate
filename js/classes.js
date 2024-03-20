@@ -1,6 +1,8 @@
-import { c, canvas, start } from "./main";
+import { c, canvas } from "../main";
 import { attackCollision } from "./util";
+
 const gravity = 0.35;
+
 export class Sprite {
   constructor({
     position,
@@ -9,6 +11,7 @@ export class Sprite {
     imageSrc,
     frameCount,
     frameDelay,
+    frameWidth,
     offsite = {
       x: 0,
       y: 0,
@@ -19,12 +22,15 @@ export class Sprite {
     this.width = width;
     this.height = height;
     this.image = new Image();
+    this.image.onload = () => {
+      // Wait for the image to load
+      this.frameWidth = frameWidth ? frameWidth : this.image.width / frameCount; // Calculate frame width after image load
+    };
     this.image.src = imageSrc;
     this.frameCount = frameCount;
     this.scale = scale;
     this.frameDelay = frameDelay; // Delay between each frame
     this.offsite = offsite;
-    this.frameWidth = this.image.width / frameCount; // Calculate frame width
     this.currentFrame = 0;
     this.frameDelayCounter = 0; // Counter to track delay
     this.status = "idle";
@@ -81,9 +87,11 @@ export class Fighter extends Sprite {
     scale,
     left = false,
     hpId,
+    frameWidth,
     timeEnd,
   }) {
     super({
+      frameWidth,
       position,
       height,
       width,
@@ -91,6 +99,7 @@ export class Fighter extends Sprite {
       frameDelay: 5,
       offsite,
       scale,
+      imageSrc: sprites.idle.imageSrc, // Provide image source directly to the superclass constructor
     });
     this.attackBox = attackBox;
     this.sprites = sprites;
@@ -108,6 +117,7 @@ export class Fighter extends Sprite {
     const hpBar = document.getElementById(this.hpId);
     hpBar.style.width = `${this.hp}%`;
   }
+
   attack(enemy) {
     this.isAttacking = true;
     const target = { ...enemy };
@@ -164,10 +174,10 @@ export class Fighter extends Sprite {
         this.status = "take";
         this.image.src = this.sprites.takeHit.imageSrc;
         this.frameCount = this.sprites.takeHit.frameCount;
-
         break;
     }
   }
+
   update() {
     this.draw();
     this.animate();

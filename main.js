@@ -1,5 +1,5 @@
 import "./style.css";
-import { Sprite, Fighter } from "./classes";
+import { Sprite, Fighter } from "./js/classes";
 export const canvas = document.querySelector("canvas");
 export const c = canvas.getContext("2d");
 
@@ -64,30 +64,31 @@ export function start(playerHp, enemyHp) {
       y: 62,
     },
     left: true,
+    frameWidth: 200,
     sprites: {
       idle: {
         frameCount: 8,
-        imageSrc: "/samuraiMack/Idle.png",
+        imageSrc: "./images/samuraiMack/Idle.png",
       },
       run: {
         frameCount: 8,
-        imageSrc: "/samuraiMack/Run.png",
+        imageSrc: "./images/samuraiMack/Run.png",
       },
       jump: {
         frameCount: 2,
-        imageSrc: "/samuraiMack/Jump.png",
+        imageSrc: "./images/samuraiMack/Jump.png",
       },
       fall: {
         frameCount: 2,
-        imageSrc: "/samuraiMack/Fall.png",
+        imageSrc: "./images/samuraiMack/Fall.png",
       },
       attack: {
         frameCount: 6,
-        imageSrc: "/samuraiMack/Attack1.png",
+        imageSrc: "./images/samuraiMack/Attack1.png",
       },
       takeHit: {
         frameCount: 4,
-        imageSrc: "/samuraiMack/Take Hit - white silhouette.png",
+        imageSrc: "./images/samuraiMack/Take Hit - white silhouette.png",
       },
     },
     attackBox: {
@@ -112,30 +113,31 @@ export function start(playerHp, enemyHp) {
       y: 68,
     },
     scale: 3.3,
+    frameWidth: 200,
     sprites: {
       idle: {
         frameCount: 4,
-        imageSrc: "/kenji/Idle.png",
+        imageSrc: "./images/kenji/Idle.png",
       },
       run: {
         frameCount: 8,
-        imageSrc: "/kenji/Run.png",
+        imageSrc: "./images/kenji/Run.png",
       },
       jump: {
         frameCount: 2,
-        imageSrc: "/kenji/Jump.png",
+        imageSrc: "./images/kenji/Jump.png",
       },
       fall: {
         frameCount: 2,
-        imageSrc: "/kenji/Fall.png",
+        imageSrc: "./images/kenji/Fall.png",
       },
       attack: {
         frameCount: 4,
-        imageSrc: "/kenji/Attack1.png",
+        imageSrc: "./images/kenji/Attack1.png",
       },
       takeHit: {
         frameCount: 4,
-        imageSrc: "/kenji/Take hit.png",
+        imageSrc: "./images/kenji/Take hit.png",
       },
     },
     attackBox: {
@@ -156,7 +158,7 @@ export function start(playerHp, enemyHp) {
     },
     height: canvas.height,
     width: canvas.width,
-    imageSrc: "/background.png",
+    imageSrc: "./images/background.png",
     frameCount: 1,
   });
   const shop = new Sprite({
@@ -166,7 +168,7 @@ export function start(playerHp, enemyHp) {
     },
     height: 300,
     width: 300,
-    imageSrc: "/shop.png",
+    imageSrc: "./images/shop.png",
     frameCount: 6,
     frameDelay: 5,
   });
@@ -320,4 +322,6 @@ export function start(playerHp, enemyHp) {
     counter.innerText = time;
   }
 }
+// document.addEventListener("DOMContentLoaded", start);
+
 start();
