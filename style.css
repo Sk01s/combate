@@ -25,6 +25,7 @@ body {
 }
 canvas {
   width: 100vw;
+  max-height: 96vh;
 }
 
 @media (prefers-color-scheme: light) {
