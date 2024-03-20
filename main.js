@@ -6,6 +6,76 @@ export const c = canvas.getContext("2d");
 // aspect radio of 16 / 9
 canvas.width = 1000;
 canvas.height = 504;
+function showLoadingScreen() {
+  const loadingScreenCanvas = document.createElement("canvas");
+  loadingScreenCanvas.id = "loading-screen-canvas";
+  loadingScreenCanvas.width = 300; // Set the width of the loading animation canvas
+  loadingScreenCanvas.height = 300; // Set the height of the loading animation canvas
+  document.body.appendChild(loadingScreenCanvas);
+
+  // Animation logic for the loading screen canvas
+  const ctx = loadingScreenCanvas.getContext("2d");
+  const width = loadingScreenCanvas.width;
+  const height = loadingScreenCanvas.height;
+  let degrees = 300;
+  let new_degrees = 0;
+  let difference = 0;
+  let color = "turquoise";
+  let bgcolor = "#222";
+  let text;
+  let animation_loop;
+
+  function init() {
+    ctx.clearRect(0, 0, width, height);
+
+    ctx.beginPath();
+    ctx.strokeStyle = bgcolor;
+    ctx.lineWidth = 30;
+    ctx.arc(width / 2, height / 2, 100, 0, Math.PI * 2, false);
+    ctx.stroke();
+    let radians = (degrees * Math.PI) / 180;
+
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 30;
+    ctx.arc(
+      width / 2,
+      height / 2,
+      100,
+      0 - (90 * Math.PI) / 180,
+      radians - (90 * Math.PI) / 180,
+      false
+    );
+    ctx.stroke();
+    ctx.fillStyle = color;
+    ctx.font = "50px Arial";
+    text = Math.floor((degrees / 360) * 100) + "%";
+    let text_width = ctx.measureText(text).width;
+    ctx.fillText(text, width / 2 - text_width / 2, height / 2 + 15);
+  }
+
+  function draw() {
+    if (typeof animation_loop != undefined) clearInterval(animation_loop);
+    new_degrees = 360;
+    difference = new_degrees - degrees;
+    animation_loop = setInterval(animate_to, 1000 / difference);
+  }
+
+  function animate_to() {
+    if (degrees == new_degrees) clearInterval(animation_loop);
+    else if (degrees < new_degrees) degrees++;
+    else degrees--;
+    init();
+  }
+
+  draw();
+}
+
+function hideLoadingScreen() {
+  const loadingScreen = document.getElementById("loading-screen-canvas");
+  document.body.removeChild(loadingScreen);
+  document.querySelector(".status").classList.add("show");
+}
 export function start(playerHp, enemyHp) {
   let time = 90;
 
@@ -68,27 +138,27 @@ export function start(playerHp, enemyHp) {
     sprites: {
       idle: {
         frameCount: 8,
-        imageSrc: "./images/samuraiMack/Idle.png",
+        imageSrc: "/images/samuraiMack/Idle.png",
       },
       run: {
         frameCount: 8,
-        imageSrc: "./images/samuraiMack/Run.png",
+        imageSrc: "/images/samuraiMack/Run.png",
       },
       jump: {
         frameCount: 2,
-        imageSrc: "./images/samuraiMack/Jump.png",
+        imageSrc: "/images/samuraiMack/Jump.png",
       },
       fall: {
         frameCount: 2,
-        imageSrc: "./images/samuraiMack/Fall.png",
+        imageSrc: "/images/samuraiMack/Fall.png",
       },
       attack: {
         frameCount: 6,
-        imageSrc: "./images/samuraiMack/Attack1.png",
+        imageSrc: "/images/samuraiMack/Attack1.png",
       },
       takeHit: {
         frameCount: 4,
-        imageSrc: "./images/samuraiMack/Take Hit - white silhouette.png",
+        imageSrc: "/images/samuraiMack/Take Hit - white silhouette.png",
       },
     },
     attackBox: {
@@ -117,27 +187,27 @@ export function start(playerHp, enemyHp) {
     sprites: {
       idle: {
         frameCount: 4,
-        imageSrc: "./images/kenji/Idle.png",
+        imageSrc: "/images/kenji/Idle.png",
       },
       run: {
         frameCount: 8,
-        imageSrc: "./images/kenji/Run.png",
+        imageSrc: "/images/kenji/Run.png",
       },
       jump: {
         frameCount: 2,
-        imageSrc: "./images/kenji/Jump.png",
+        imageSrc: "/images/kenji/Jump.png",
       },
       fall: {
         frameCount: 2,
-        imageSrc: "./images/kenji/Fall.png",
+        imageSrc: "/images/kenji/Fall.png",
       },
       attack: {
         frameCount: 4,
-        imageSrc: "./images/kenji/Attack1.png",
+        imageSrc: "/images/kenji/Attack1.png",
       },
       takeHit: {
         frameCount: 4,
-        imageSrc: "./images/kenji/Take hit.png",
+        imageSrc: "/images/kenji/Take hit.png",
       },
     },
     attackBox: {
@@ -158,7 +228,7 @@ export function start(playerHp, enemyHp) {
     },
     height: canvas.height,
     width: canvas.width,
-    imageSrc: "./images/background.png",
+    imageSrc: "/images/background.png",
     frameCount: 1,
   });
   const shop = new Sprite({
@@ -168,7 +238,7 @@ export function start(playerHp, enemyHp) {
     },
     height: 300,
     width: 300,
-    imageSrc: "./images/shop.png",
+    imageSrc: "/images/shop.png",
     frameCount: 6,
     frameDelay: 5,
   });
@@ -322,6 +392,56 @@ export function start(playerHp, enemyHp) {
     counter.innerText = time;
   }
 }
-// document.addEventListener("DOMContentLoaded", start);
+// List of image URLs to preload
+const imageUrls = [
+  "/images/samuraiMack/Idle.png",
+  "/images/samuraiMack/Run.png",
+  "/images/samuraiMack/Jump.png",
+  "/images/samuraiMack/Fall.png",
+  "/images/samuraiMack/Attack1.png",
+  "/images/samuraiMack/Take Hit - white silhouette.png",
+  "/images/kenji/Idle.png",
+  "/images/kenji/Run.png",
+  "/images/kenji/Jump.png",
+  "/images/kenji/Fall.png",
+  "/images/kenji/Attack1.png",
+  "/images/kenji/Take hit.png",
+  "/images/background.png",
+  "/images/shop.png",
+];
 
-start();
+// Function to preload images
+function preloadImages(urls, callback) {
+  let loadedCount = 0;
+
+  // Function to load individual images
+  function loadImage(url) {
+    const img = new Image();
+    img.onload = () => {
+      loadedCount++;
+      // Update loading progress (optional)
+      const progress = Math.round((loadedCount / urls.length) * 100);
+      console.log(`Loading progress: ${progress}%`);
+
+      // Check if all images are loaded
+      if (loadedCount === urls.length) {
+        // All images are loaded, invoke the callback
+
+        callback();
+      }
+    };
+    img.src = url;
+  }
+
+  // Preload each image
+  urls.forEach((url) => {
+    loadImage(url);
+  });
+}
+showLoadingScreen();
+// Preload images
+preloadImages(imageUrls, () => {
+  // All images are loaded, hide the loading screen and start the game
+  hideLoadingScreen();
+  start();
+});
